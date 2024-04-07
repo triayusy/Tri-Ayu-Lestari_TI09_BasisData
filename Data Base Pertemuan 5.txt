@@ -1,0 +1,387 @@
+Microsoft Windows [Version 10.0.22631.3296]
+(c) Microsoft Corporation. All rights reserved.
+
+C:\Users\tri ayu>cd \xampp\mysql\bin
+
+C:\xampp\mysql\bin>mysql -u root -p
+Enter password:
+Welcome to the MariaDB monitor.  Commands end with ; or \g.
+Your MariaDB connection id is 62
+Server version: 10.4.28-MariaDB mariadb.org binary distribution
+
+Copyright (c) 2000, 2018, Oracle, MariaDB Corporation Ab and others.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+MariaDB [(none)]> use dbpostti09
+Database changed
+MariaDB [dbpostti09]> SHOW TABLES;
++-------------------------+
+| Tables_in_dbpostti09    |
++-------------------------+
+| failed_jobs             |
+| jenis_produk            |
+| kartu                   |
+| lihat_vendor            |
+| member                  |
+| migrations              |
+| password_reset_tokens   |
+| password_resets         |
+| pelanggan               |
+| pembayaran              |
+| pembelian               |
+| personal_access_tokens  |
+| pesanan                 |
+| pesanan_items           |
+| pesanan_pelanggan_kartu |
+| produk                  |
+| staff                   |
+| users                   |
+| vendor                  |
++-------------------------+
+19 rows in set (0.001 sec)
+
+MariaDB [dbpostti09]> SELECT * FROM pesanan;
++----+------------+---------+--------------+
+| id | tanggal    | total   | pelanggan_id |
++----+------------+---------+--------------+
+|  1 | 2015-11-04 | 9720000 |            1 |
+|  2 | 2015-11-04 |   17500 |            3 |
+|  3 | 2015-11-04 |       0 |            6 |
+|  4 | 2015-11-04 |       0 |            7 |
+|  5 | 2015-11-04 |       0 |           10 |
+|  6 | 2015-11-04 |       0 |            2 |
+|  7 | 2015-11-04 |       0 |            5 |
+|  8 | 2015-11-04 |       0 |            4 |
+|  9 | 2015-11-04 |       0 |            8 |
+| 10 | 2015-11-04 |       0 |            9 |
+| 11 | 2015-11-04 |   30000 |            9 |
++----+------------+---------+--------------+
+11 rows in set (0.001 sec)
+
+MariaDB [dbpostti09]> SELECT tanggal, total FROM pesanan;
++------------+---------+
+| tanggal    | total   |
++------------+---------+
+| 2015-11-04 | 9720000 |
+| 2015-11-04 |   17500 |
+| 2015-11-04 |       0 |
+| 2015-11-04 |       0 |
+| 2015-11-04 |       0 |
+| 2015-11-04 |       0 |
+| 2015-11-04 |       0 |
+| 2015-11-04 |       0 |
+| 2015-11-04 |       0 |
+| 2015-11-04 |       0 |
+| 2015-11-04 |   30000 |
++------------+---------+
+11 rows in set (0.001 sec)
+
+MariaDB [dbpostti09]> desc produk;
++-----------------+--------------+------+-----+---------+----------------+
+| Field           | Type         | Null | Key | Default | Extra          |
++-----------------+--------------+------+-----+---------+----------------+
+| id              | int(11)      | NO   | PRI | NULL    | auto_increment |
+| kode            | varchar(10)  | NO   | UNI | NULL    |                |
+| nama            | varchar(45)  | NO   |     | NULL    |                |
+| harga_beli      | double       | NO   |     | NULL    |                |
+| harga_jual      | double       | NO   |     | NULL    |                |
+| stok            | int(11)      | NO   |     | NULL    |                |
+| min_stok        | int(11)      | NO   |     | NULL    |                |
+| foto            | varchar(255) | YES  |     | NULL    |                |
+| deskripsi       | text         | YES  |     | NULL    |                |
+| jenis_produk_id | int(11)      | NO   | MUL | NULL    |                |
++-----------------+--------------+------+-----+---------+----------------+
+10 rows in set (0.009 sec)
+
+MariaDB [dbpostti09]> SELECT kode, nama, harga_jual, stok
+    -> FROM produk WHERE stok < 20;
++--------+-------------------+------------+------+
+| kode   | nama              | harga_jual | stok |
++--------+-------------------+------------+------+
+| TV01   | Televisi 21 inchs |   50500000 |    5 |
+| TV02   | Televisi 40 inch  |    7440000 |    4 |
+| K001   | Kulkas 2 pintu    |    4680000 |    6 |
+| M001   | Meja Makan        |     600000 |    4 |
+| TK01   | Teh Kotak         |       3500 |    6 |
+| PC01   | PC Desktop HP     |    9984000 |    9 |
+| AC01   | Notebook Acer S   |   11232000 |    7 |
+| LN01   | Notebook Lenovo   |   12480000 |    9 |
+| L005   | Laptop Lenovo     |   16000000 |    5 |
+| L112   | Kopi              |      30000 |   10 |
+| L113   | Teh Sosro 2       |      15000 |   10 |
+| L0015  | Laptop Asus       |    5000000 |   10 |
+| TV0115 | Televisi 22 inc`  |   50500000 |    5 |
+| TV0116 | Televisi 23 inc   |   50500000 |    5 |
+| TV0117 | Televisi 24 inc   |   50500000 |    5 |
+| TV0118 | Televisi 25 inc   |   50500000 |    5 |
+| TV0120 | Televisi 27 inc   |   50500000 |    5 |
+| TV0121 | Televisi 28 inc   |   50500000 |    5 |
+| TV0122 | Televisi 29 inc   |   50500000 |    5 |
+| THP001 | Teh Pucuk         |       5000 |   10 |
+| THP002 | Teh Pucuk2        |       5000 |   10 |
++--------+-------------------+------------+------+
+21 rows in set (0.001 sec)
+
+MariaDB [dbpostti09]> desc pelanggan;
++-----------+-------------+------+-----+---------+----------------+
+| Field     | Type        | Null | Key | Default | Extra          |
++-----------+-------------+------+-----+---------+----------------+
+| id        | int(11)     | NO   | PRI | NULL    | auto_increment |
+| kode      | varchar(10) | NO   | UNI | NULL    |                |
+| nama      | varchar(45) | NO   | MUL | NULL    |                |
+| jk        | char(1)     | NO   |     | NULL    |                |
+| tmp_lahir | varchar(30) | YES  |     | NULL    |                |
+| tgl_lahir | date        | YES  | MUL | NULL    |                |
+| email     | varchar(45) | YES  |     | NULL    |                |
+| kartu_id  | int(11)     | NO   | MUL | NULL    |                |
++-----------+-------------+------+-----+---------+----------------+
+8 rows in set (0.009 sec)
+
+MariaDB [dbpostti09]> SELECT nama, tmp_lahir FROM pelanggan;
++--------------------+------------+
+| nama               | tmp_lahir  |
++--------------------+------------+
+| Agung Sedayu Group | Solo       |
+| Pandan Wangi       | Yogyakarta |
+| Sekar Mirah        | Kediri     |
+| Swandaru Geni      | Kediri     |
+| Pradabashu         | Pati       |
+| Gayatri Dwi        | Jakarta    |
+| Dewi Gyat          | Jakarta    |
+| Andre Haru         | Surabaya   |
+| Ahmad Hasan        | Surabaya   |
+| Cassanndra         | Belfast    |
+| Andi Wijaya        | Tangerang  |
+| Ira                | Jakarta    |
++--------------------+------------+
+12 rows in set (0.003 sec)
+
+MariaDB [dbpostti09]> SELECT nama, tmp_lahir
+    -> FROM pelanggan WHERE jakarta;
+ERROR 1054 (42S22): Unknown column 'jakarta' in 'where clause'
+MariaDB [dbpostti09]> SELECT nama, tmp_lahir
+    -> FROM pelanggan WHERE tmp_lahir jakarta;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'jakarta' at line 2
+MariaDB [dbpostti09]> SELECT nama, tmp_lahir
+    -> FROM pelanggan WHERE tmp_lahir
+    -> FROM pelanggan WHERE tmp_lahir;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'FROM pelanggan WHERE tmp_lahir' at line 3
+MariaDB [dbpostti09]> SELECT nama, tmp_lahir FROM pelanggan
+    -> WHERE tmp_lahir = 'jakarta';
++-------------+-----------+
+| nama        | tmp_lahir |
++-------------+-----------+
+| Gayatri Dwi | Jakarta   |
+| Dewi Gyat   | Jakarta   |
+| Ira         | Jakarta   |
++-------------+-----------+
+3 rows in set (0.001 sec)
+
+MariaDB [dbpostti09]> SELECT * FROM pesanan;
++----+------------+---------+--------------+
+| id | tanggal    | total   | pelanggan_id |
++----+------------+---------+--------------+
+|  1 | 2015-11-04 | 9720000 |            1 |
+|  2 | 2015-11-04 |   17500 |            3 |
+|  3 | 2015-11-04 |       0 |            6 |
+|  4 | 2015-11-04 |       0 |            7 |
+|  5 | 2015-11-04 |       0 |           10 |
+|  6 | 2015-11-04 |       0 |            2 |
+|  7 | 2015-11-04 |       0 |            5 |
+|  8 | 2015-11-04 |       0 |            4 |
+|  9 | 2015-11-04 |       0 |            8 |
+| 10 | 2015-11-04 |       0 |            9 |
+| 11 | 2015-11-04 |   30000 |            9 |
++----+------------+---------+--------------+
+11 rows in set (0.001 sec)
+
+MariaDB [dbpostti09]> SELECT id, tanggal, total, pelanggan_id
+    -> WHERE pelanggan_id = '9'
+    -> WHERE pelanggan_id = '9';
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'WHERE pelanggan_id = '9'' at line 3
+MariaDB [dbpostti09]> SELECT id, tanggal, total, pelanggan_id
+    -> FROM pesanan WHERE pelanggan_id = 9;
++----+------------+-------+--------------+
+| id | tanggal    | total | pelanggan_id |
++----+------------+-------+--------------+
+| 10 | 2015-11-04 |     0 |            9 |
+| 11 | 2015-11-04 | 30000 |            9 |
++----+------------+-------+--------------+
+2 rows in set (0.000 sec)
+
+MariaDB [dbpostti09]> SELECT kode, nama, harga_jual, stok
+    -> FROM produk WHERE stok > 5 AND stok < 20 ;
++--------+-----------------+------------+------+
+| kode   | nama            | harga_jual | stok |
++--------+-----------------+------------+------+
+| K001   | Kulkas 2 pintu  |    4680000 |    6 |
+| TK01   | Teh Kotak       |       3500 |    6 |
+| PC01   | PC Desktop HP   |    9984000 |    9 |
+| AC01   | Notebook Acer S |   11232000 |    7 |
+| LN01   | Notebook Lenovo |   12480000 |    9 |
+| L112   | Kopi            |      30000 |   10 |
+| L113   | Teh Sosro 2     |      15000 |   10 |
+| L0015  | Laptop Asus     |    5000000 |   10 |
+| THP001 | Teh Pucuk       |       5000 |   10 |
+| THP002 | Teh Pucuk2      |       5000 |   10 |
++--------+-----------------+------------+------+
+10 rows in set (0.000 sec)
+
+MariaDB [dbpostti09]> SELECT kode, nama, harga_jual, stok
+    -> FROM produk WHERE stok > 5 OR stok < 20 ;
++--------+-------------------+------------+------+
+| kode   | nama              | harga_jual | stok |
++--------+-------------------+------------+------+
+| TV01   | Televisi 21 inchs |   50500000 |    5 |
+| TV02   | Televisi 40 inch  |    7440000 |    4 |
+| K001   | Kulkas 2 pintu    |    4680000 |    6 |
+| M001   | Meja Makan        |     600000 |    4 |
+| TK01   | Teh Kotak         |       3500 |    6 |
+| PC01   | PC Desktop HP     |    9984000 |    9 |
+| TB01   | Teh Botol         |       2500 |   53 |
+| AC01   | Notebook Acer S   |   11232000 |    7 |
+| LN01   | Notebook Lenovo   |   12480000 |    9 |
+| L005   | Laptop Lenovo     |   16000000 |    5 |
+| L112   | Kopi              |      30000 |   10 |
+| L113   | Teh Sosro 2       |      15000 |   10 |
+| L0015  | Laptop Asus       |    5000000 |   10 |
+| TV0115 | Televisi 22 inc`  |   50500000 |    5 |
+| TV0116 | Televisi 23 inc   |   50500000 |    5 |
+| TV0117 | Televisi 24 inc   |   50500000 |    5 |
+| TV0118 | Televisi 25 inc   |   50500000 |    5 |
+| TV0120 | Televisi 27 inc   |   50500000 |    5 |
+| TV0121 | Televisi 28 inc   |   50500000 |    5 |
+| TV0122 | Televisi 29 inc   |   50500000 |    5 |
+| THP001 | Teh Pucuk         |       5000 |   10 |
+| THP002 | Teh Pucuk2        |       5000 |   10 |
++--------+-------------------+------------+------+
+22 rows in set (0.000 sec)
+
+MariaDB [dbpostti09]> SELECT kode, nama, harga_jual, stok
+    -> FROM produk WHERE harga_jual > 5000 AND stok < 5;
++------+------------------+------------+------+
+| kode | nama             | harga_jual | stok |
++------+------------------+------------+------+
+| TV02 | Televisi 40 inch |    7440000 |    4 |
+| M001 | Meja Makan       |     600000 |    4 |
++------+------------------+------------+------+
+2 rows in set (0.000 sec)
+
+MariaDB [dbpostti09]> SELECT kode, nama, harga_jual, stok
+    -> FROM produk WHERE stok > 5 AND harga_jual > 5000;
++-------+-----------------+------------+------+
+| kode  | nama            | harga_jual | stok |
++-------+-----------------+------------+------+
+| K001  | Kulkas 2 pintu  |    4680000 |    6 |
+| PC01  | PC Desktop HP   |    9984000 |    9 |
+| AC01  | Notebook Acer S |   11232000 |    7 |
+| LN01  | Notebook Lenovo |   12480000 |    9 |
+| L112  | Kopi            |      30000 |   10 |
+| L113  | Teh Sosro 2     |      15000 |   10 |
+| L0015 | Laptop Asus     |    5000000 |   10 |
++-------+-----------------+------------+------+
+7 rows in set (0.000 sec)
+
+MariaDB [dbpostti09]> SELECT nama, tmp_lahir, tgl_lahir, FROM pelanggan
+    -> ORDER BY nama desc;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'FROM pelanggan
+ORDER BY nama desc' at line 1
+MariaDB [dbpostti09]> SELECT nama, tmp_lahir, tgl_lahir FROM pelanggan
+    -> ORDER BY nama desc;
++--------------------+------------+------------+
+| nama               | tmp_lahir  | tgl_lahir  |
++--------------------+------------+------------+
+| Swandaru Geni      | Kediri     | 1981-01-04 |
+| Sekar Mirah        | Kediri     | 1983-02-20 |
+| Pradabashu         | Pati       | 1985-04-02 |
+| Pandan Wangi       | Yogyakarta | 1950-01-01 |
+| Ira                | Jakarta    | 2023-11-07 |
+| Gayatri Dwi        | Jakarta    | 1987-11-28 |
+| Dewi Gyat          | Jakarta    | 1988-12-01 |
+| Cassanndra         | Belfast    | 1990-11-20 |
+| Andre Haru         | Surabaya   | 1990-07-15 |
+| Andi Wijaya        | Tangerang  | 2023-11-07 |
+| Ahmad Hasan        | Surabaya   | 1992-10-15 |
+| Agung Sedayu Group | Solo       | 2010-01-01 |
++--------------------+------------+------------+
+12 rows in set (0.000 sec)
+
+MariaDB [dbpostti09]> SELECT nama, tmp_lahir, tgl_lahir FROM pelanggan
+    -> ORDER BY tgl_lahir desc;
++--------------------+------------+------------+
+| nama               | tmp_lahir  | tgl_lahir  |
++--------------------+------------+------------+
+| Ira                | Jakarta    | 2023-11-07 |
+| Andi Wijaya        | Tangerang  | 2023-11-07 |
+| Agung Sedayu Group | Solo       | 2010-01-01 |
+| Ahmad Hasan        | Surabaya   | 1992-10-15 |
+| Cassanndra         | Belfast    | 1990-11-20 |
+| Andre Haru         | Surabaya   | 1990-07-15 |
+| Dewi Gyat          | Jakarta    | 1988-12-01 |
+| Gayatri Dwi        | Jakarta    | 1987-11-28 |
+| Pradabashu         | Pati       | 1985-04-02 |
+| Sekar Mirah        | Kediri     | 1983-02-20 |
+| Swandaru Geni      | Kediri     | 1981-01-04 |
+| Pandan Wangi       | Yogyakarta | 1950-01-01 |
++--------------------+------------+------------+
+12 rows in set (0.000 sec)
+
+MariaDB [dbpostti09]> SELEC kode, nama, harga_jual, stok
+    -> ORDER BY harga_jual desc;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'SELEC kode, nama, harga_jual, stok
+ORDER BY harga_jual desc' at line 1
+MariaDB [dbpostti09]> SELECT kode, nama, harga_jual, stok
+    -> ORDER BY harga_jual desc;
+ERROR 1054 (42S22): Unknown column 'kode' in 'field list'
+MariaDB [dbpostti09]> SELECT kode, nama, harga_jual, stok FROM produk
+    -> ORDER BY harga_jual desc;
++--------+-------------------+------------+------+
+| kode   | nama              | harga_jual | stok |
++--------+-------------------+------------+------+
+| TV01   | Televisi 21 inchs |   50500000 |    5 |
+| TV0117 | Televisi 24 inc   |   50500000 |    5 |
+| TV0116 | Televisi 23 inc   |   50500000 |    5 |
+| TV0115 | Televisi 22 inc`  |   50500000 |    5 |
+| TV0120 | Televisi 27 inc   |   50500000 |    5 |
+| TV0118 | Televisi 25 inc   |   50500000 |    5 |
+| TV0121 | Televisi 28 inc   |   50500000 |    5 |
+| TV0122 | Televisi 29 inc   |   50500000 |    5 |
+| L005   | Laptop Lenovo     |   16000000 |    5 |
+| LN01   | Notebook Lenovo   |   12480000 |    9 |
+| AC01   | Notebook Acer S   |   11232000 |    7 |
+| PC01   | PC Desktop HP     |    9984000 |    9 |
+| TV02   | Televisi 40 inch  |    7440000 |    4 |
+| L0015  | Laptop Asus       |    5000000 |   10 |
+| K001   | Kulkas 2 pintu    |    4680000 |    6 |
+| M001   | Meja Makan        |     600000 |    4 |
+| L112   | Kopi              |      30000 |   10 |
+| L113   | Teh Sosro 2       |      15000 |   10 |
+| THP001 | Teh Pucuk         |       5000 |   10 |
+| THP002 | Teh Pucuk2        |       5000 |   10 |
+| TK01   | Teh Kotak         |       3500 |    6 |
+| TB01   | Teh Botol         |       2500 |   53 |
++--------+-------------------+------------+------+
+22 rows in set (0.000 sec)
+
+MariaDB [dbpostti09]> SELECT * FROM pesanan LIMIT = 2;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near '= 2' at line 1
+MariaDB [dbpostti09]> SELECT * FROM pesanan LIMIT 2;
++----+------------+---------+--------------+
+| id | tanggal    | total   | pelanggan_id |
++----+------------+---------+--------------+
+|  1 | 2015-11-04 | 9720000 |            1 |
+|  2 | 2015-11-04 |   17500 |            3 |
++----+------------+---------+--------------+
+2 rows in set (0.000 sec)
+
+MariaDB [dbpostti09]> SELECT * FROM pesanan LIMIT 2 OFFSET 3;
++----+------------+-------+--------------+
+| id | tanggal    | total | pelanggan_id |
++----+------------+-------+--------------+
+|  4 | 2015-11-04 |     0 |            7 |
+|  5 | 2015-11-04 |     0 |           10 |
++----+------------+-------+--------------+
+2 rows in set (0.000 sec)
+
+MariaDB [dbpostti09]>

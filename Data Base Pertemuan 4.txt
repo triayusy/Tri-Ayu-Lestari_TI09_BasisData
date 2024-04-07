@@ -1,0 +1,122 @@
+Microsoft Windows [Version 10.0.22631.3155]
+(c) Microsoft Corporation. All rights reserved.
+
+C:\xampp2\mysql\bin>mysql -u root -p
+Enter password:
+Welcome to the MariaDB monitor.  Commands end with ; or \g.
+Your MariaDB connection id is 8
+Server version: 10.4.28-MariaDB mariadb.org binary distribution
+
+Copyright (c) 2000, 2018, Oracle, MariaDB Corporation Ab and others.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+MariaDB [(none)]> use ti09
+Database changed
+MariaDB [ti09]> show tables;
++----------------+
+| Tables_in_ti09 |
++----------------+
+| jabatan        |
+| pegawai        |
++----------------+
+2 rows in set (0.001 sec)
+
+MariaDB [ti09]> SELECT * FROM jabatan;
+Empty set (0.014 sec)
+
+MariaDB [ti09]> INSERT INTO jabatan VALUES
+    -> ('','Manager'),
+    -> ('','Direktur'),
+    -> ('','Staff'),
+    ->
+    -> ('','Staff');
+ERROR 1062 (23000): Duplicate entry 'Staff' for key 'nama'
+MariaDB [ti09]> desc jabatan;
++-------+-------------+------+-----+---------+----------------+
+| Field | Type        | Null | Key | Default | Extra          |
++-------+-------------+------+-----+---------+----------------+
+| id    | int(11)     | NO   | PRI | NULL    | auto_increment |
+| nama  | varchar(30) | NO   | UNI | NULL    |                |
++-------+-------------+------+-----+---------+----------------+
+2 rows in set (0.008 sec)
+
+MariaDB [ti09]> INSERT INTO jabatan VALUES
+    -> ('','Manager'),
+    -> ('','Direktur'),
+    -> ('','Staff');
+Query OK, 3 rows affected, 3 warnings (0.004 sec)
+Records: 3  Duplicates: 0  Warnings: 3
+
+MariaDB [ti09]> SELECT * FROM jabatan;
++----+----------+
+| id | nama     |
++----+----------+
+|  6 | Direktur |
+|  5 | Manager  |
+|  7 | Staff    |
++----+----------+
+3 rows in set (0.001 sec)
+
+MariaDB [ti09]> DESC pegawai;
++------------+-------------+------+-----+---------+----------------+
+| Field      | Type        | Null | Key | Default | Extra          |
++------------+-------------+------+-----+---------+----------------+
+| id         | int(11)     | NO   | PRI | NULL    | auto_increment |
+| nip        | varchar(20) | NO   | UNI | NULL    |                |
+| nama       | varchar(30) | NO   |     | NULL    |                |
+| tgl_lahir  | date        | NO   |     | NULL    |                |
+| email      | varchar(30) | YES  |     | NULL    |                |
+| no_hp      | varchar(30) | YES  |     | NULL    |                |
+| jabatan_id | int(11)     | NO   |     | NULL    |                |
++------------+-------------+------+-----+---------+----------------+
+7 rows in set (0.015 sec)
+
+MariaDB [ti09]> INSERT INTO pegawai (nip, nama, tgl_lahir, email, no_hp, jabatan_id)
+    -> VALUES
+    -> ('2001','Budi','1997-06-08','budi@gmail.com','09816257198',2),
+    -> ('2002','Andi','1997-06-07','andi@gmail.com','08725142678',3);
+Query OK, 2 rows affected (0.005 sec)
+Records: 2  Duplicates: 0  Warnings: 0
+
+MariaDB [ti09]> SELECT * FROM pegawai;
++----+------+------+------------+----------------+-------------+------------+
+| id | nip  | nama | tgl_lahir  | email          | no_hp       | jabatan_id |
++----+------+------+------------+----------------+-------------+------------+
+|  1 | 2001 | Budi | 1997-06-08 | budi@gmail.com | 09816257198 |          2 |
+|  2 | 2002 | Andi | 1997-06-07 | andi@gmail.com | 08725142678 |          3 |
++----+------+------+------------+----------------+-------------+------------+
+2 rows in set (0.001 sec)
+
+MariaDB [ti09]> UPDATE pengawai SET
+    -> nama = 'Budi Sudarsono', no_hp = '089625141628' WHERE ID = 1;
+ERROR 1146 (42S02): Table 'ti09.pengawai' doesn't exist
+MariaDB [ti09]> UPDATE pengawai SET
+    -> nama = 'Budi Sudarsono', no_hp = '08925162781' WHERE id = 1;
+ERROR 1146 (42S02): Table 'ti09.pengawai' doesn't exist
+MariaDB [ti09]> UPDATE pegawai SET
+    -> nama = 'Budi Sudarsono', no_hp = '0896251617' WHERE id = 1;
+Query OK, 1 row affected (0.004 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+MariaDB [ti09]> SELECT * FROM pegawai;
++----+------+----------------+------------+----------------+-------------+------------+
+| id | nip  | nama           | tgl_lahir  | email          | no_hp       | jabatan_id |
++----+------+----------------+------------+----------------+-------------+------------+
+|  1 | 2001 | Budi Sudarsono | 1997-06-08 | budi@gmail.com | 0896251617  |          2 |
+|  2 | 2002 | Andi           | 1997-06-07 | andi@gmail.com | 08725142678 |          3 |
++----+------+----------------+------------+----------------+-------------+------------+
+2 rows in set (0.001 sec)
+
+MariaDB [ti09]> DELETE FROM pegawai WHERE id =2;
+Query OK, 1 row affected (0.004 sec)
+
+MariaDB [ti09]> SELECT * FROM pegawai;
++----+------+----------------+------------+----------------+------------+------------+
+| id | nip  | nama           | tgl_lahir  | email          | no_hp      | jabatan_id |
++----+------+----------------+------------+----------------+------------+------------+
+|  1 | 2001 | Budi Sudarsono | 1997-06-08 | budi@gmail.com | 0896251617 |          2 |
++----+------+----------------+------------+----------------+------------+------------+
+1 row in set (0.001 sec)
+
+MariaDB [ti09]>
